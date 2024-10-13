@@ -24,7 +24,7 @@ class test_Local_Stack__Internal(TestCase):
             assert getattr(health.services, 'resource-groups') == 'disabled'          # name has a - in it
             assert health.services.s3                          in ['available', 'running']
             assert health.services.iam                         in ['available', 'running']
-            assert health.version                              == '3.8.2.dev14'
+            assert health.version                              == '3.8.2.dev15'
 
 
             #delattr(obj_data.services, 'lambda'         )
