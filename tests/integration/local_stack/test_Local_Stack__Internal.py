@@ -17,14 +17,18 @@ class test_Local_Stack__Internal(TestCase):
         with self.local_stack__internal as _:
             assert _.obj() == __()
 
-    def test_internal__health(self):
+    def test_get__internal_health(self):
         with self.local_stack__internal as _:
-            health = _.internal__health()
+            health = _.get__internal_health()
             assert getattr(health.services, 'lambda'         ) == 'available'         # name clashes with lambda keyword
             assert getattr(health.services, 'resource-groups') == 'disabled'          # name has a - in it
             assert health.services.s3                          in ['available', 'running']
             assert health.services.iam                         in ['available', 'running']
             assert health.version                              == '3.8.2.dev15'
+
+    def test_get__internal_init(self):
+        with self.local_stack__internal as _:
+            assert _.get__internal_init() == __(completed=__(BOOT=True, START=True, READY=True, SHUTDOWN=False), scripts=[])
 
 
             #delattr(obj_data.services, 'lambda'         )
