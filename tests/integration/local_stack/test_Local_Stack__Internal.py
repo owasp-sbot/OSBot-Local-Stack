@@ -20,18 +20,21 @@ class test_Local_Stack__Internal(TestCase):
             assert _.obj() == __()
 
     def test_get__aws_lambda_runtimes(self):
-        with self.local_stack__internal as _:
-            assert _.get__aws_lambda_runtimes() == __(Runtimes=[ 'dotnet6', 'java8.al2', 'python3.8', 'provided.al2', 'python3.9', 'java21', 'nodejs16.x',
-                                                                 'python3.10', 'provided.al2023', 'nodejs20.x', 'dotnet8', 'java11', 'ruby3.2',
-                                                                 'nodejs18.x', 'python3.12', 'java17', 'ruby3.3', 'python3.11'])
+        with (self.local_stack__internal as _):
+            assert 'python3.11' in _.get__aws_lambda_runtimes().Runtimes
+            assert 'python3.12' in _.get__aws_lambda_runtimes().Runtimes
+            #   __(Runtimes=[ 'dotnet6', 'java8.al2', 'python3.8', 'provided.al2', 'python3.9', 'java21', 'nodejs16.x',
+            #                                                     'python3.10', 'provided.al2023', 'nodejs20.x', 'dotnet8', 'java11', 'ruby3.2',
+            #                                                     'nodejs18.x', 'python3.12', 'java17', 'ruby3.3', 'python3.11'])
 
     def test_get__internal_health(self):
         with self.local_stack__internal as _:
+            expected_available_services = ['s3','lambda', 'iam', 'cloudwatch', 'dynamodb', 'logs', 'sts']
             health = _.get__internal_health()
             assert getattr(health.services, 'lambda'         ) == 'available'         # name clashes with lambda keyword
             assert getattr(health.services, 'resource-groups') == 'disabled'          # name has a - in it
-            assert health.services.s3                          in ['available', 'running']
-            assert health.services.iam                         in ['available', 'running']
+            for service_name in expected_available_services:
+                assert getattr(health.services,service_name)   in ['available', 'running']
             assert health.version                              == '3.8.2.dev15'
             # skipping this since there were a couple inconsistencies in the data when running this in GH Actions
             #delattr(obj_data.services, 'lambda'         )

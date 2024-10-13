@@ -6,7 +6,7 @@ services:
       - "4566:4566"               # Edge port for all services
       - "4510-4559:4510-4559"     # Service-specific ports (Lambda uses some of these)
     environment:
-      - SERVICES=s3,lambda, iam
+      - SERVICES=s3,lambda, iam,cloudwatch,dynamodb,logs,sts
       - AWS_ACCESS_KEY_ID=localstack
       - AWS_SECRET_ACCESS_KEY=localstack
     volumes:
