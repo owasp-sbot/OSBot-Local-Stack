@@ -6,7 +6,7 @@ runs:
   steps:
     - name: Start Local Stack
       #uses: owasp-sbot/OSBot-GitHub-Actions/.github/actions/docker__local-stack@dev
-      uses: ./.github/actions/docker__local-stack@dev
+      uses: ./.github/actions/docker__local-stack
       with:
         LOCAL_STACK_SERVICES: 's3,lambda,iam,cloudwatch,dynamodb,logs,sts'
 
