@@ -35,28 +35,28 @@ class test_TestCase__Local_Stack__Temp_Lambda(TestCase__Local_Stack__Temp_Lambda
         deploy_lambda = Deploy_Lambda(handler=run)
         #pprint(deploy_lambda.obj())
         assert deploy_lambda.osbot_setup.s3.client().meta.endpoint_url == DEFAULT__LOCAL_STACK__TARGET_SERVER
-        print("-------------")
-        with deploy_lambda as _:
-            _.add_function_source_code()
-            update_result = _.package.update()
-            pprint(update_result)
-            update_status = _.lambda_function().wait_for_function_update_to_complete(wait_time=0.5)
-            print("------------- CONFIGURATION (after update_status)")
-            pprint(_.lambda_function().configuration())
-            print("-------------")
-            print("UPDATE STATUS: ", update_status)
-
-        #for i in range(1,10):
-
-            # print("-------------")
-            # print(f"Deploying lambda #{i}" )
-            # result = deploy_lambda.update()
-            # if result == 'Successful':
-            #     break
-            # else:
-            #     pprint(f"got result: {result}")
-            #     package_update_result = deploy_lambda.package.update()
-            #     pprint(package_update_result)
+        # print("-------------")
+        # with deploy_lambda as _:
+        #     _.add_function_source_code()
+        #     update_result = _.package.update()
+        #     pprint(update_result)
+        #     update_status = _.lambda_function().wait_for_function_update_to_complete(wait_time=0.5)
+        #     print("------------- CONFIGURATION (after update_status)")
+        #     pprint(_.lambda_function().configuration())
+        #     print("-------------")
+        #     print("UPDATE STATUS: ", update_status)
+        #
+        # #for i in range(1,10):
+        #
+        #     # print("-------------")
+        #     # print(f"Deploying lambda #{i}" )
+        #     # result = deploy_lambda.update()
+        #     # if result == 'Successful':
+        #     #     break
+        #     # else:
+        #     #     pprint(f"got result: {result}")
+        #     #     package_update_result = deploy_lambda.package.update()
+        #     #     pprint(package_update_result)
 
         assert deploy_lambda.update()                                  == 'Successful'
 
