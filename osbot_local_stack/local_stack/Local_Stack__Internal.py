@@ -12,9 +12,7 @@ DEFAULT__LOCAL_STACK__TARGET_SERVER  = 'http://localhost:4566'
 
 # see full list at https://docs.localstack.cloud/references/internal-endpoints/
 class Local_Stack__Internal(Type_Safe):
-
-    def target_server(self):
-        return get_env(ENV_NAME__LOCAL_STACK__TARGET_SERVER, DEFAULT__LOCAL_STACK__TARGET_SERVER)
+    endpoint_url: str = get_env(ENV_NAME__LOCAL_STACK__TARGET_SERVER, DEFAULT__LOCAL_STACK__TARGET_SERVER)
 
     def get__aws_lambda_runtimes(self):
         return self.requests__aws__get('lambda/runtimes')
@@ -40,7 +38,7 @@ class Local_Stack__Internal(Type_Safe):
         return self.requests__get(path)
 
     def requests__get(self, path):
-        url = url_join_safe(self.target_server(), path)
+        url = url_join_safe(self.endpoint_url, path)
         json_data = requests.get(url).json()
         obj_data = dict_to_obj(json_data)
         return obj_data

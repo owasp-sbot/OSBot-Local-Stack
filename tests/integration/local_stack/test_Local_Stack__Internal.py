@@ -17,7 +17,7 @@ class test_Local_Stack__Internal(TestCase):
 
     def test__init__(self):
         with self.local_stack__internal as _:
-            assert _.obj() == __()
+            assert _.obj() == __(endpoint_url='http://localhost:4566')
 
     def test_get__aws_lambda_runtimes(self):
         with (self.local_stack__internal as _):
@@ -62,4 +62,4 @@ class test_Local_Stack__Internal(TestCase):
 
     def test_target_server(self):
         with self.local_stack__internal as _:
-            assert _.target_server() == DEFAULT__LOCAL_STACK__TARGET_SERVER
+            assert _.endpoint_url == DEFAULT__LOCAL_STACK__TARGET_SERVER
