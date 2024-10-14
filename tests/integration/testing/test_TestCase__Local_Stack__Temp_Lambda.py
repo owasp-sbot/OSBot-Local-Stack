@@ -35,6 +35,17 @@ class test_TestCase__Local_Stack__Temp_Lambda(TestCase__Local_Stack__Temp_Lambda
         deploy_lambda = Deploy_Lambda(handler=run)
         #pprint(deploy_lambda.obj())
         assert deploy_lambda.osbot_setup.s3.client().meta.endpoint_url == DEFAULT__LOCAL_STACK__TARGET_SERVER
+        for i in range(1,10):
+            print("-------------")
+            print(f"Deploying lambda #{i}" )
+            result = deploy_lambda.update()
+            if result == 'Successful':
+                break
+            else:
+                pprint(f"got result: {result}")
+                package_update_result = deploy_lambda.package.update()
+                pprint(package_update_result)
+
         assert deploy_lambda.update()                                  == 'Successful'
 
         with Lambda() as _:

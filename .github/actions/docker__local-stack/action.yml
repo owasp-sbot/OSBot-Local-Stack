@@ -1,0 +1,47 @@
+name: 'Start LocalStack'
+description: 'Start LocalStack for testing'
+
+inputs:
+  LOCAL_STACK_SERVICES:
+    description: 'The LocalStack SERVICES to enable'
+    required: false
+    default: 's3,lambda,iam'
+  AWS_ACCESS_KEY_ID:
+    description: 'The AWS_ACCESS_KEY_ID to use'
+    required: false
+    default: 'localstack__key'
+  AWS_SECRET_ACCESS_KEY:
+    description: 'the AWS_SECRET_ACCESS_KEY'
+    required: false
+    default: 'localstack__secret'
+
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Set up Docker
+      uses: docker/setup-buildx-action@v3
+
+    - name: Run LocalStack
+      shell: bash
+      run: |
+        docker run -d -p 4566:4566 -p 4510-4559:4510-4559 \
+        -e SERVICES="${{ inputs.LOCAL_STACK_SERVICES }}" \
+        -e AWS_ACCESS_KEY_ID="${{ inputs.AWS_ACCESS_KEY_ID }}" \
+        -e AWS_SECRET_ACCESS_KEY="${{ inputs.AWS_SECRET_ACCESS_KEY }}" \        
+        --name localstack-server \
+        localstack/localstack:latest
+        
+        # -e LAMBDA_EXECUTOR=local \
+
+    - name: Wait for LocalStack to be ready
+      shell: bash
+      run: |
+        for i in {1..10}; do
+          if curl -s http://localhost:4566/_localstack/health; then
+            echo "LocalStack is ready"
+            break
+          fi
+          echo "Waiting for LocalStack..."
+          sleep 5
+        done
