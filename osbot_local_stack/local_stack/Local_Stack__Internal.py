@@ -1,4 +1,6 @@
 import requests
+from requests import RequestException
+
 from osbot_utils.utils.Objects import dict_to_obj
 
 from osbot_utils.utils.Http import url_join_safe
@@ -38,7 +40,10 @@ class Local_Stack__Internal(Type_Safe):
         return self.requests__get(path)
 
     def requests__get(self, path):
-        url = url_join_safe(self.endpoint_url, path)
-        json_data = requests.get(url).json()
-        obj_data = dict_to_obj(json_data)
-        return obj_data
+        try:
+            url = url_join_safe(self.endpoint_url, path)
+            json_data = requests.get(url).json()
+            obj_data = dict_to_obj(json_data)
+            return obj_data
+        except RequestException:
+            return {}

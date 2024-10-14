@@ -1,6 +1,10 @@
+from pprint import pprint
+
+from osbot_aws.aws.sts.STS import STS
+
 from osbot_aws.AWS_Config import ENV_NAME__AWS_ENDPOINT_URL
 from osbot_local_stack.local_stack.Local_Stack__Internal import Local_Stack__Internal, \
-    ENV_NAME__LOCAL_STACK__TARGET_SERVER
+    ENV_NAME__LOCAL_STACK__TARGET_SERVER, DEFAULT__LOCAL_STACK__TARGET_SERVER
 from osbot_utils.utils.Env import get_env, set_env, del_env
 
 from osbot_utils.base_classes.Type_Safe import Type_Safe
@@ -30,6 +34,15 @@ class Local_Stack(Type_Safe):
         else:
             set_env(ENV_NAME__AWS_ENDPOINT_URL, self.endpoint_url__saved)
         return self
+
+    def check__local_stack__health(self):
+        return self.local_stack__internal.get__internal_health() != {}
+
+    def check__local_stack__boto3_setup(self):
+        return STS().client().meta.endpoint_url == DEFAULT__LOCAL_STACK__TARGET_SERVER
+
+    def is_local_stack_configured_and_available(self):
+        return self.check__local_stack__health() and self.check__local_stack__boto3_setup()
 
     def local_stack__health(self):
         return self.local_stack__internal.get__internal_health()
