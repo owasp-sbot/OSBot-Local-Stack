@@ -31,8 +31,6 @@ runs:
         -e AWS_SECRET_ACCESS_KEY="${{ inputs.AWS_SECRET_ACCESS_KEY }}" \        
         --name localstack-server \
         localstack/localstack:latest
-        
-        # -e LAMBDA_EXECUTOR=local \
 
     - name: Wait for LocalStack to be ready
       shell: bash
