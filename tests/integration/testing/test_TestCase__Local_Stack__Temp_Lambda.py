@@ -57,8 +57,14 @@ class test_TestCase__Local_Stack__Temp_Lambda(TestCase__Local_Stack__Temp_Lambda
         #     #     pprint(f"got result: {result}")
         #     #     package_update_result = deploy_lambda.package.update()
         #     #     pprint(package_update_result)
-
-        assert deploy_lambda.update()                                  == 'Successful'
+        update_status = deploy_lambda.update()
+        if update_status == "Pending":
+            print("*********************************************")
+            print("Waiting for update to complete")
+            update_status = deploy_lambda.lambda_function().wait_for_function_update_to_complete(wait_time=0.5)
+            print("*********************************************")
+            pprint("update_status", update_status)
+        assert update_status                                 == 'Successful'
 
         with Lambda() as _:
            assert 'osbot_local_stack_aws_lambdas_dev_hello_world' in _.functions_names()
