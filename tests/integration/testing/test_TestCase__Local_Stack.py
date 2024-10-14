@@ -1,5 +1,7 @@
 from unittest import TestCase
 
+from osbot_utils.utils.Dev import pprint
+
 from osbot_aws.aws.sts.STS import STS
 
 from osbot_aws.aws.s3.S3 import S3
@@ -23,3 +25,9 @@ class test_TestCase__Local_Stack(TestCase__Local_Stack):
     def test_boto3_sessions(self):
         assert S3 ().client().meta.endpoint_url == Local_Stack().local_stack__internal.endpoint_url
         assert STS().client().meta.endpoint_url == Local_Stack().local_stack__internal.endpoint_url
+
+    # def test_buckets(self):
+    #     with S3() as _:
+    #         #_.bucket_delete('local-stack-7v762n15l6p9')
+    #         pprint(_.buckets())
+

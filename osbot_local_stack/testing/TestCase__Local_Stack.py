@@ -1,8 +1,7 @@
-from unittest import TestCase
-
+from unittest                                        import TestCase
+from osbot_aws.AWS_Config                            import aws_config
 from osbot_aws.testing.Temp__Random__AWS_Credentials import Temp_AWS_Credentials
-
-from osbot_local_stack.local_stack.Local_Stack import Local_Stack
+from osbot_local_stack.local_stack.Local_Stack       import Local_Stack
 
 
 class TestCase__Local_Stack(TestCase):
@@ -12,6 +11,7 @@ class TestCase__Local_Stack(TestCase):
         cls.local_stack = Local_Stack()
         cls.temp_asw_credentials = Temp_AWS_Credentials()
         cls.temp_asw_credentials.set_vars()
+        cls.aws_region = aws_config.region_name()
         cls.local_stack.activate()
 
     @classmethod
