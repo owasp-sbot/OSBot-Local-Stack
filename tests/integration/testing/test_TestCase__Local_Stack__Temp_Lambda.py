@@ -40,7 +40,9 @@ class test_TestCase__Local_Stack__Temp_Lambda(TestCase__Local_Stack__Temp_Lambda
             _.add_function_source_code()
             update_result = _.package.update()
             pprint(update_result)
-            update_status = _.lambda_function().wait_for_function_update_to_complete()
+            update_status = _.lambda_function().wait_for_function_update_to_complete(wait_time=0.5)
+            print("------------- CONFIGURATION (after update_status)")
+            pprint(_.lambda_function().configuration())
             print("-------------")
             print("UPDATE STATUS: ", update_status)
 
