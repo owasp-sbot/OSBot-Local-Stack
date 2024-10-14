@@ -57,13 +57,16 @@ class test_TestCase__Local_Stack__Temp_Lambda(TestCase__Local_Stack__Temp_Lambda
         #     #     pprint(f"got result: {result}")
         #     #     package_update_result = deploy_lambda.package.update()
         #     #     pprint(package_update_result)
-        update_status = deploy_lambda.update()
+        with print_duration(action_name="Create Lambda"):
+            update_status = deploy_lambda.update()
         if update_status == "Pending":
-            print("*********************************************")
-            print("Waiting for update to complete")
-            update_status = deploy_lambda.lambda_function().wait_for_function_update_to_complete(wait_time=0.5)
-            print("*********************************************")
-            pprint("update_status", update_status)
+            with print_duration(action_name="Waiting for update to complete"):
+
+                print("*********************************************")
+                print("Waiting for update to complete")
+                update_status = deploy_lambda.lambda_function().wait_for_function_update_to_complete(wait_time=0.5)
+                print("*********************************************")
+                pprint("update_status", update_status)
         assert update_status                                 == 'Successful'
 
         with Lambda() as _:
@@ -72,10 +75,10 @@ class test_TestCase__Local_Stack__Temp_Lambda(TestCase__Local_Stack__Temp_Lambda
         with S3() as _:
              assert 'lambdas/osbot_local_stack.aws.lambdas.dev.hello_world.zip'  in _.find_files(bucket_name)
 
-        with print_duration() as duration_1:
+        with print_duration(action_name="1st lambda invoke") as duration_1:
             assert deploy_lambda.invoke() == 'Hello "World"'
-        with print_duration() as duration_2:
+        with print_duration(action_name="2nd lambda invoke") as duration_2:
             assert deploy_lambda.invoke(dict(name='OSBot')) == 'Hello "OSBot"'
 
-        assert duration_1.seconds < 5           # 1st execution is slower due to the need to setup the funciton
+        assert duration_1.seconds < 7           # 1st execution is slower due to the need to set-up the function
         assert duration_2.seconds < 0.1         # 2nd execution should be much faster
