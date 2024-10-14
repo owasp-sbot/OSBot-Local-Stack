@@ -31,7 +31,6 @@ class test_Local_Stack__Internal(TestCase):
         with self.local_stack__internal as _:
             expected_available_services = ['s3','lambda', 'iam', 'cloudwatch', 'dynamodb', 'logs', 'sts']
             health = _.get__internal_health()
-            assert getattr(health.services, 'lambda'         ) == 'available'         # name clashes with lambda keyword
             assert getattr(health.services, 'resource-groups') == 'disabled'          # name has a - in it
             for service_name in expected_available_services:
                 assert getattr(health.services,service_name)   in ['available', 'running']

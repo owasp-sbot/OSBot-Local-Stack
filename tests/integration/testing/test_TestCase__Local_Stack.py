@@ -26,8 +26,10 @@ class test_TestCase__Local_Stack(TestCase__Local_Stack):
         assert S3 ().client().meta.endpoint_url == Local_Stack().local_stack__internal.endpoint_url
         assert STS().client().meta.endpoint_url == Local_Stack().local_stack__internal.endpoint_url
 
-    # def test_buckets(self):
-    #     with S3() as _:
-    #         #_.bucket_delete('local-stack-7v762n15l6p9')
-    #         pprint(_.buckets())
+    def test_buckets(self):
+        with S3() as _:
+            # bucket_name = 'local-stack-1guj84096d17-for-lambda-test'
+            # _.bucket_delete_all_files(bucket_name)
+            # _.bucket_delete(bucket_name)
+            assert _.buckets() == []                # there should be no buckets since all local buckets in the current session are deleted
 
