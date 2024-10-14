@@ -1,3 +1,5 @@
+from osbot_utils.utils.Dev import pprint
+
 from osbot_utils.context_managers.print_duration                 import print_duration
 from osbot_utils.testing.Temp_Env_Vars                           import Temp_Env_Vars
 from osbot_utils.utils.Env                                       import set_env
@@ -8,7 +10,7 @@ from osbot_local_stack.testing.TestCase__Local_Stack__Temp_Bucket import TestCas
 DEPLOY_LAMBDA__UPDATE_WAIT_TIME = 1.0
 
 class TestCase__Local_Stack__Temp_Lambda(TestCase__Local_Stack__Temp_Bucket):
-    lambda_handler = run                                                                                        # change this before invoking the setUpClass to change the target lambda function
+    lambda_handler :callable = run                                                                              # change this before invoking the setUpClass to change the target lambda function
 
     @classmethod
     def setUpClass(cls):
@@ -42,4 +44,3 @@ class TestCase__Local_Stack__Temp_Lambda(TestCase__Local_Stack__Temp_Bucket):
 
     def invoke__return_logs(self, params=None):
         return self.lambda_function.invoke_return_logs(params)
-
