@@ -5,13 +5,15 @@ from osbot_local_stack.local_stack.Local_Stack       import Local_Stack
 
 
 class TestCase__Local_Stack(TestCase):
+    aws_region = None
 
     @classmethod
     def setUpClass(cls):
         cls.local_stack = Local_Stack()
         cls.temp_asw_credentials = Temp_AWS_Credentials()
         cls.temp_asw_credentials.set_vars()
-        cls.aws_region = aws_config.region_name()
+        if cls.aws_region is None:
+            cls.aws_region = aws_config.region_name()
         cls.local_stack.activate()
 
     @classmethod

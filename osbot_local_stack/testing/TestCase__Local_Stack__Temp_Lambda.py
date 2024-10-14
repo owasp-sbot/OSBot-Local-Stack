@@ -1,16 +1,14 @@
-from osbot_utils.utils.Dev import pprint
-
-from osbot_utils.context_managers.print_duration                 import print_duration
 from osbot_utils.testing.Temp_Env_Vars                           import Temp_Env_Vars
-from osbot_utils.utils.Env                                       import set_env
 from osbot_aws.deploy.Deploy_Lambda                              import Deploy_Lambda
 from osbot_local_stack.aws.lambdas.dev.temp_lambda               import run
 from osbot_local_stack.testing.TestCase__Local_Stack__Temp_Bucket import TestCase__Local_Stack__Temp_Bucket
 
 DEPLOY_LAMBDA__UPDATE_WAIT_TIME = 1.0
+LAMBDA__DEPENDENCIES__REQUESTS  = [ 'requests', 'idna', 'certifi']
 
 class TestCase__Local_Stack__Temp_Lambda(TestCase__Local_Stack__Temp_Bucket):
     lambda_handler :callable = run                                                                              # change this before invoking the setUpClass to change the target lambda function
+
 
     @classmethod
     def setUpClass(cls):
@@ -18,11 +16,20 @@ class TestCase__Local_Stack__Temp_Lambda(TestCase__Local_Stack__Temp_Bucket):
         cls.temp_env_vars   = Temp_Env_Vars(env_vars={'OSBOT_LAMBDA_S3_BUCKET': cls.s3_bucket}).set_vars()      # temporarily set the OSBOT_LAMBDA_S3_BUCKET to the temp S3 Bucket
         cls.deploy_lambda   = Deploy_Lambda(cls.lambda_handler)                                                 # create a Deploy_Lambda instance with the lambda handler from osbot_local_stack.aws.lambdas.dev.temp_lambda
         cls.lambda_function = cls.deploy_lambda.lambda_function()                                               # helper variable to reference the lambda function
-        cls.create_temp_lambda()                                                                                # create the lambda function
+        if (cls.delete_after_run is False) and cls.lambda_function.exists():
+            print(f"*** Skipping create Lambda: {cls.deploy_lambda.lambda_name() }")
+            print()
+        else:
+            cls.create_temp_lambda()                                                                            # create the lambda function
 
     @classmethod
     def tearDownClass(cls):
-        cls.delete_temp_lambda()
+        if cls.delete_after_run:
+            cls.delete_temp_lambda()
+        else:
+            print()
+            print()
+            print(f"*** Skipping delete Lambda function: {cls.deploy_lambda.lambda_name()}")
         super().tearDownClass()
         cls.temp_env_vars.restore_vars()
 
