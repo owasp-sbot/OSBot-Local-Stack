@@ -42,3 +42,4 @@ class TestCase__Local_Stack__Temp_Lambda(TestCase__Local_Stack__Temp_Bucket):
 
     def invoke__return_logs(self, params=None):
         return self.lambda_function.invoke_return_logs(params)
+

@@ -1,3 +1,7 @@
+from osbot_utils.utils.Files import path_combine, file_exists, file_contents, file_write
+
+from osbot_utils.utils.Functions import function_source_code
+
 from osbot_utils.utils.Misc import list_set
 
 from osbot_utils.utils.Objects import dict_to_obj
@@ -30,6 +34,30 @@ class test_TestCase__Local_Stack__Temp_Lambda(TestCase__Local_Stack__Temp_Lambda
         assert list_set(result)    == ['execution_logs', 'name', 'request_id', 'return_value', 'status']
         assert result.name         == 'osbot_local_stack_aws_lambdas_dev_temp_lambda'
         assert result.return_value == temp_lambda_return_message
+
+    def test_update_lambda_code(self):
+        def run(event, context):
+            return 'return dynamic lambda code'
+
+        new_source_code = function_source_code(run)
+
+        from osbot_utils.utils.Dev import pprint
+        with self.lambda_function as _:
+            assert _.invoke() == temp_lambda_return_message                             # lamda
+
+            lambda_file      = _.original_name.replace('.','/') + '.py'
+            lambda_file_path = path_combine(_.folder_code, lambda_file)
+            assert file_exists(lambda_file_path) is True
+            file_write(path=lambda_file_path, contents=new_source_code)
+            assert _.update().get('status')                 == 'ok'
+            assert _.wait_for_function_update_to_complete() == 'Successful'
+            assert _.invoke() == 'return dynamic lambda code'
+
+        # with self.deploy_lambda as _:
+        #     pprint(_.obj())
+        #     #
+        #     #_.update()
+        #     #pprint(code)
 
     # def test_create__temp_lambda(self):
     #     bucket_name = self.s3_bucket
