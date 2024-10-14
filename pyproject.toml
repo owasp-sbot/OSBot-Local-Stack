@@ -1,6 +1,6 @@
 [tool.poetry]
 name        = "osbot_local_stack"
-version     = "v0.1.16"
+version     = "v0.1.17"
 description = "OWASP Security Bot - LLM"
 authors     = ["Dinis Cruz <dinis.cruz@owasp.org>"]
 license     = "MIT"
