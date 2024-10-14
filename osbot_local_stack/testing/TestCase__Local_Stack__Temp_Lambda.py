@@ -8,12 +8,13 @@ from osbot_local_stack.testing.TestCase__Local_Stack__Temp_Bucket import TestCas
 DEPLOY_LAMBDA__UPDATE_WAIT_TIME = 1.0
 
 class TestCase__Local_Stack__Temp_Lambda(TestCase__Local_Stack__Temp_Bucket):
+    lambda_handler = run                                                                                        # change this before invoking the setUpClass to change the target lambda function
 
     @classmethod
     def setUpClass(cls):
         super().setUpClass()                                                                                    # call the base class setUpClass(),  which will create the temp S3 Bucket (in Local Stack)
         cls.temp_env_vars   = Temp_Env_Vars(env_vars={'OSBOT_LAMBDA_S3_BUCKET': cls.s3_bucket}).set_vars()      # temporarily set the OSBOT_LAMBDA_S3_BUCKET to the temp S3 Bucket
-        cls.deploy_lambda   = Deploy_Lambda(run)                                                                # create a Deploy_Lambda instance with the lambda handler from osbot_local_stack.aws.lambdas.dev.temp_lambda
+        cls.deploy_lambda   = Deploy_Lambda(cls.lambda_handler)                                                 # create a Deploy_Lambda instance with the lambda handler from osbot_local_stack.aws.lambdas.dev.temp_lambda
         cls.lambda_function = cls.deploy_lambda.lambda_function()                                               # helper variable to reference the lambda function
         cls.create_temp_lambda()                                                                                # create the lambda function
 
@@ -25,13 +26,12 @@ class TestCase__Local_Stack__Temp_Lambda(TestCase__Local_Stack__Temp_Bucket):
 
     @classmethod
     def create_temp_lambda(cls):
-        with print_duration():
-            update_status = cls.deploy_lambda.update()
-            if update_status == "Pending":
-                wait_time     = DEPLOY_LAMBDA__UPDATE_WAIT_TIME
-                update_status = cls.deploy_lambda.lambda_function().wait_for_function_update_to_complete(wait_time=wait_time)       # in GH actions and locally it can take up to 10 seconds to update the lambda on the first run (I think due to the time it takes to download the docker image)
-            assert update_status == 'Successful'
-            assert cls.deploy_lambda.exists() is True
+        update_status = cls.deploy_lambda.update()
+        if update_status == "Pending":
+            wait_time     = DEPLOY_LAMBDA__UPDATE_WAIT_TIME
+            update_status = cls.deploy_lambda.lambda_function().wait_for_function_update_to_complete(wait_time=wait_time)       # in GH actions and locally it can take up to 10 seconds to update the lambda on the first run (I think due to the time it takes to download the docker image)
+        assert update_status == 'Successful'
+        assert cls.deploy_lambda.exists() is True
 
     @classmethod
     def delete_temp_lambda(cls):
