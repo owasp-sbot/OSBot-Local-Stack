@@ -14,6 +14,8 @@ class TestCase__Local_Stack(TestCase):
         cls.temp_asw_credentials.set_vars()
         if cls.aws_region is None:
             cls.aws_region = aws_config.region_name()
+        else:
+            aws_config.set_region(cls.aws_region)
         cls.local_stack.activate()
 
     @classmethod

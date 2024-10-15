@@ -2,7 +2,7 @@ from osbot_local_stack.aws.lambdas.dev.with__osbot_utils            import run
 from osbot_local_stack.utils.Version                                import version__osbot_local_stack
 from osbot_local_stack.testing.TestCase__Local_Stack__Temp_Lambda   import TestCase__Local_Stack__Temp_Lambda
 
-class test_hello_world(TestCase__Local_Stack__Temp_Lambda):
+class test_with__osbot_utils(TestCase__Local_Stack__Temp_Lambda):
 
     @classmethod
     def setUpClass(cls):

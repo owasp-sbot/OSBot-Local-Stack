@@ -1,4 +1,5 @@
-from osbot_local_stack.utils.Version import version__osbot_local_stack
+import requests
 
 def run(event, context):
-    return f'current version: {version__osbot_local_stack}'
+    result = requests.get('https://httpbin.org/get')
+    return f'{result.status_code}'
