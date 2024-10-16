@@ -9,6 +9,7 @@ services:
       - SERVICES=s3,lambda, iam,cloudwatch,dynamodb,logs,sts
       - AWS_ACCESS_KEY_ID=localstack
       - AWS_SECRET_ACCESS_KEY=localstack
+      - DNS_SERVER=8.8.8.8
     volumes:
       - localstack_data:/var/lib/localstack
       - /var/run/docker.sock:/var/run/docker.sock  # Required for Lambda Docker execution
