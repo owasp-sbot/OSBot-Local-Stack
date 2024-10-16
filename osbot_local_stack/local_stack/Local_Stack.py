@@ -18,7 +18,7 @@ class Local_Stack(Type_Safe):
 
 
     def activate(self):
-        endpoint_url = self.local_stack__internal.endpoint_url
+        endpoint_url             = self.local_stack__internal.endpoint_url
         self.endpoint_url__saved = get_env(ENV_NAME__AWS_ENDPOINT_URL)
         set_env(ENV_NAME__AWS_ENDPOINT_URL, endpoint_url)
         return self
