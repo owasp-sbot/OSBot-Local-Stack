@@ -5,6 +5,7 @@ from osbot_local_stack.testing.TestCase__Local_Stack__Temp_Lambda import TestCas
     LAMBDA__DEPENDENCIES__REQUESTS
 
 
+
 class test_with__requests(TestCase__Local_Stack__Temp_Lambda):
 
     @classmethod
