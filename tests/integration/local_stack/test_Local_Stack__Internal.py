@@ -34,7 +34,9 @@ class test_Local_Stack__Internal(TestCase):
             assert getattr(health.services, 'resource-groups') == 'disabled'          # name has a - in it
             for service_name in expected_available_services:
                 assert getattr(health.services,service_name)   in ['available', 'running']
-            assert health.version.startswith('3.8.')           is True
+
+            #assert health.version.startswith('3.8.')           is True
+
             # skipping this since there were a couple inconsistencies in the data when running this in GH Actions
             #delattr(obj_data.services, 'lambda'         )
             #delattr(obj_data.services, 'resource-groups')

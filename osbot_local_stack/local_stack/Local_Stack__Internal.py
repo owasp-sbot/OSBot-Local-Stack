@@ -1,20 +1,18 @@
-import requests
-from requests import RequestException
-
-from osbot_utils.utils.Objects import dict_to_obj
-
-from osbot_utils.utils.Http import url_join_safe
-
-from osbot_utils.utils.Env import get_env
-
 from osbot_utils.base_classes.Type_Safe import Type_Safe
 
 ENV_NAME__LOCAL_STACK__TARGET_SERVER = 'LOCAL_STACK__TARGET_SERVER'
 DEFAULT__LOCAL_STACK__TARGET_SERVER  = 'http://localhost:4566'
 
 # see full list at https://docs.localstack.cloud/references/internal-endpoints/
+
 class Local_Stack__Internal(Type_Safe):
-    endpoint_url: str = get_env(ENV_NAME__LOCAL_STACK__TARGET_SERVER, DEFAULT__LOCAL_STACK__TARGET_SERVER)
+    endpoint_url: str = None
+
+    def __init__(self, **kwargs):
+        from osbot_utils.utils.Env import get_env
+
+        super().__init__(**kwargs)
+        self.endpoint_url = get_env(ENV_NAME__LOCAL_STACK__TARGET_SERVER, DEFAULT__LOCAL_STACK__TARGET_SERVER)
 
     def get__aws_lambda_runtimes(self):
         return self.requests__aws__get('lambda/runtimes')
@@ -40,6 +38,11 @@ class Local_Stack__Internal(Type_Safe):
         return self.requests__get(path)
 
     def requests__get(self, path):
+        import requests
+        from requests                  import RequestException
+        from osbot_utils.utils.Objects import dict_to_obj
+        from osbot_utils.utils.Http    import url_join_safe
+
         try:
             url = url_join_safe(self.endpoint_url, path)
             json_data = requests.get(url).json()

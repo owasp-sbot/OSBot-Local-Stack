@@ -1,7 +1,4 @@
-from osbot_aws.aws.s3.S3                                 import S3
-from osbot_aws.AWS_Config                                import ENV_NAME__AWS_ENDPOINT_URL
 from osbot_local_stack.local_stack.Local_Stack__Internal import Local_Stack__Internal, DEFAULT__LOCAL_STACK__TARGET_SERVER
-from osbot_utils.utils.Env                               import get_env, set_env, del_env
 from osbot_utils.base_classes.Type_Safe                  import Type_Safe
 
 class Local_Stack(Type_Safe):
@@ -18,12 +15,18 @@ class Local_Stack(Type_Safe):
 
 
     def activate(self):
+        from osbot_aws.AWS_Config  import ENV_NAME__AWS_ENDPOINT_URL
+        from osbot_utils.utils.Env import get_env, set_env
+
         endpoint_url             = self.local_stack__internal.endpoint_url
         self.endpoint_url__saved = get_env(ENV_NAME__AWS_ENDPOINT_URL)
         set_env(ENV_NAME__AWS_ENDPOINT_URL, endpoint_url)
         return self
 
     def deactivate(self):
+        from osbot_aws.AWS_Config  import ENV_NAME__AWS_ENDPOINT_URL
+        from osbot_utils.utils.Env import set_env, del_env
+
         if self.endpoint_url__saved is None:
             del_env(ENV_NAME__AWS_ENDPOINT_URL)
         else:
@@ -34,6 +37,8 @@ class Local_Stack(Type_Safe):
         return self.local_stack__internal.get__internal_health() != {}
 
     def check__local_stack__boto3_setup(self):
+        from osbot_aws.aws.s3.S3 import S3
+
         return S3().client().meta.endpoint_url == DEFAULT__LOCAL_STACK__TARGET_SERVER                   # use S3 since this is the one that is currently working correctly
 
     def is_local_stack_configured_and_available(self):
