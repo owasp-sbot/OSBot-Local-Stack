@@ -1,5 +1,6 @@
+from osbot_utils.type_safe.Type_Safe                     import Type_Safe
 from osbot_local_stack.local_stack.Local_Stack__Internal import Local_Stack__Internal, DEFAULT__LOCAL_STACK__TARGET_SERVER
-from osbot_utils.base_classes.Type_Safe                  import Type_Safe
+
 
 class Local_Stack(Type_Safe):
     endpoint_url__saved  : str                   = None
