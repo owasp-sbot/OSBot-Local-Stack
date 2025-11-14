@@ -10,7 +10,7 @@ class TestCase__Local_Stack(TestCase):
     @classmethod
     def setUpClass(cls):
         cls.local_stack = Local_Stack()
-        cls.temp_asw_credentials = Temp_AWS_Credentials()
+        cls.temp_asw_credentials = Temp_AWS_Credentials().with_localstack_credentials()
         cls.temp_asw_credentials.set_vars()
         if cls.aws_region is None:
             cls.aws_region = aws_config.region_name()
