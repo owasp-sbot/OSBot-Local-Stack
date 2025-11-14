@@ -1,6 +1,6 @@
-from osbot_utils.testing.Temp_Env_Vars                           import Temp_Env_Vars
-from osbot_aws.deploy.Deploy_Lambda                              import Deploy_Lambda
-from osbot_local_stack.aws.lambdas.dev.temp_lambda               import run
+from osbot_utils.testing.Temp_Env_Vars                            import Temp_Env_Vars
+from osbot_aws.deploy.Deploy_Lambda                               import Deploy_Lambda
+from osbot_local_stack.aws.lambdas.dev.temp_lambda                import run
 from osbot_local_stack.testing.TestCase__Local_Stack__Temp_Bucket import TestCase__Local_Stack__Temp_Bucket
 
 DEPLOY_LAMBDA__UPDATE_WAIT_TIME = 1.0

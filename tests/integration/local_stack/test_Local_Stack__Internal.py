@@ -24,9 +24,10 @@ class test_Local_Stack__Internal(TestCase):
 
     def test_get__internal_health(self):
         with self.local_stack__internal as _:
-            expected_available_services = ['s3','lambda', 'iam', 'cloudwatch', 'dynamodb', 'logs', 'sts']
-            health = _.get__internal_health()
-            assert getattr(health.services, 'resource-groups') == 'disabled'          # name has a - in it
+            expected_available_services = ['s3','_lambda', 'iam', 'cloudwatch', 'dynamodb', 'logs', 'sts']
+            health = _.get__internal_health()                           # obj_to_dict will make all fields to be valid python names
+            #assert health == __()
+            assert health.services.resource_groups == 'disabled'
             for service_name in expected_available_services:
                 assert getattr(health.services,service_name)   in ['available', 'running']
 
@@ -48,13 +49,13 @@ class test_Local_Stack__Internal(TestCase):
 
     def test_get__internal_plugins(self):
         with self.local_stack__internal as _:
-            assert list_set(_.get__internal_plugins()) == [ 'localstack.aws.provider'                        ,
-                                                            'localstack.hooks.configure_localstack_container',
-                                                            'localstack.hooks.on_infra_ready'                ,
-                                                            'localstack.hooks.on_infra_shutdown'             ,
-                                                            'localstack.hooks.on_infra_start'                ,
-                                                            'localstack.hooks.prepare_host'                  ,
-                                                            'localstack.init.runner'                         ]
+            assert list_set(_.get__internal_plugins()) == [ 'localstack_aws_provider'                        ,          # obj_to_dict will make all fields to be valid python names
+                                                            'localstack_hooks_configure_localstack_container',
+                                                            'localstack_hooks_on_infra_ready'                ,
+                                                            'localstack_hooks_on_infra_shutdown'             ,
+                                                            'localstack_hooks_on_infra_start'                ,
+                                                            'localstack_hooks_prepare_host'                  ,
+                                                            'localstack_init_runner'                         ]
 
     def test_target_server(self):
         with self.local_stack__internal as _:
