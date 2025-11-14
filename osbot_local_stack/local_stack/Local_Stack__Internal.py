@@ -39,14 +39,14 @@ class Local_Stack__Internal(Type_Safe):
 
     def requests__get(self, path):
         import requests
-        from requests                  import RequestException
-        from osbot_utils.utils.Objects import dict_to_obj
-        from osbot_utils.utils.Http    import url_join_safe
+        from requests                      import RequestException
+        from osbot_utils.testing.__helpers import dict_to_obj
+        from osbot_utils.utils.Http        import url_join_safe
 
         try:
-            url = url_join_safe(self.endpoint_url, path)
+            url       = url_join_safe(self.endpoint_url, path)
             json_data = requests.get(url).json()
-            obj_data = dict_to_obj(json_data)
+            obj_data  = dict_to_obj(json_data)
             return obj_data
         except RequestException:
             return {}
