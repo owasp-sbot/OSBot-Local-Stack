@@ -1,8 +1,8 @@
+from osbot_utils.testing.__                                       import __
+from osbot_utils.testing.__helpers                                import dict_to_obj
 from osbot_utils.utils.Json                                       import json_parse
-from osbot_utils.utils.Objects                                    import dict_to_obj, __
 from osbot_local_stack.aws.lambdas.dev.with__requests             import run
-from osbot_local_stack.testing.TestCase__Local_Stack__Temp_Lambda import TestCase__Local_Stack__Temp_Lambda, \
-    LAMBDA__DEPENDENCIES__REQUESTS
+from osbot_local_stack.testing.TestCase__Local_Stack__Temp_Lambda import TestCase__Local_Stack__Temp_Lambda, LAMBDA__DEPENDENCIES__REQUESTS
 
 
 

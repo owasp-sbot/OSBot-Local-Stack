@@ -1,11 +1,10 @@
+from osbot_utils.testing.__helpers                                  import dict_to_obj
 from osbot_utils.utils.Files                                        import path_combine, file_exists, file_write
 from osbot_utils.utils.Functions                                    import function_source_code
 from osbot_utils.utils.Misc                                         import list_set
-from osbot_utils.utils.Objects                                      import dict_to_obj
 from osbot_local_stack.aws.lambdas.dev.temp_lambda                  import temp_lambda_return_message
 from osbot_utils.utils.Env                                          import get_env
 from osbot_local_stack.testing.TestCase__Local_Stack__Temp_Lambda   import TestCase__Local_Stack__Temp_Lambda
-
 
 class test_TestCase__Local_Stack__Temp_Lambda(TestCase__Local_Stack__Temp_Lambda):
 
